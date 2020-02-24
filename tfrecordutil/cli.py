@@ -29,7 +29,7 @@ def csv2tfrecord(arguments=None):
                 df[k] = df[k].fillna('')
 
         schema = create_example_schema(df)
-        dataset = tf.data.Dataset(args.input)
+        dataset = tf.data.Dataset(dict(df))
         write_example_tfrecord(args.output, dataset, schema)
     except Exception as e:
         logger.error(e)
