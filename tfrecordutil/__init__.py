@@ -65,8 +65,6 @@ def _create_example_deserialization(schema):
     return {k: tf.io.FixedLenFeature([], v) for k, v in  schema.items()}
 
 def read_example_tfrecord(filename, schema):
-    if not tf.executing_eagerly():
-        raise ValueError('do not disable eager execution')
     example_deserialization = _create_example_deserialization(schema)
     def deserialize_example(features):
         return tf.io.parse_example(features, example_deserialization)
