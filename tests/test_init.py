@@ -6,21 +6,19 @@ import pandas as pd
 from tempfile import NamedTemporaryFile
 
 # pylint: disable=import-error,no-name-in-module
-from tensorflow.python.framework.ops import disable_eager_execution, enable_eager_execution
+from tensorflow.python.framework import ops
 
 from tfrecordutil import create_example_schema, write_example_tfrecord, read_example_tfrecord
 
 
 def test_tfrecordutil_when_disabling_eager_execution():
     expected = 'do not disable eager execution'
-    disable_eager_execution()
+    ops.reset_default_graph()
+    ops.disable_eager_execution()
     with pytest.raises(ValueError) as e:
         write_example_tfrecord(None, None, None)
     assert str(e.value) == expected
-    with pytest.raises(ValueError) as e:
-        read_example_tfrecord(None, None)
-    assert str(e.value) == expected
-    enable_eager_execution()
+    ops.enable_eager_execution()
 
 def test_tfrecordutil():
     tmp = NamedTemporaryFile()
